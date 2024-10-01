@@ -1,0 +1,149 @@
+:root {
+    --purple-primary: #8A2BE2;
+    --purple-light: #9370DB;
+    --yellow-primary: #FFD700;
+    --yellow-light: #FFFFE0;
+    --lavender: #E6E6FA;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
+
+.container {
+    width: 80%;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+nav {
+    background-color: var(--purple-primary);
+    padding: 10px 0;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    margin: 0 5px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+nav a:hover {
+    background-color: var(--yellow-primary);
+    color: var(--purple-primary);
+}
+
+h1 {
+    color: var(--purple-primary);
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.signup-form {
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    color: var(--purple-primary);
+    font-weight: bold;
+}
+
+input[type="text"],
+input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus {
+    outline: none;
+    border-color: var(--purple-light);
+    background-color: var(--yellow-light);
+}
+
+.button {
+    display: block;
+    width: 100%;
+    padding: 12px 20px;
+    background-color: var(--purple-primary);
+    color: white;
+    text-decoration: none;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 20px;
+    text-align: center;
+}
+
+.button:hover {
+    background-color: var(--yellow-primary);
+    color: var(--purple-primary);
+}
+
+.centered-text {
+    text-align: center;
+}
+
+/* 기존 스타일 유지 */
+.habit-content {
+    background-color: rgba(230, 230, 250, 0.5);
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.habit-content p {
+    margin: 0;
+}
+
+.habit-detail {
+    background-color: #f9f9f9;
+    border: 1px solid #eee;
+    border-radius: 5px;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.habit-detail h2 {
+    color: var(--purple-primary);
+    margin-top: 0;
+}
+
+.habit-detail p {
+    color: #666;
+    line-height: 1.6;
+}
+
+.button-group {
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.button-group .button {
+    margin-top: 0;
+}
