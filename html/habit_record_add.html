@@ -1,15 +1,16 @@
 <html>
   <head>
-    <title>습관 추가</title>
+    <title>Add Note for your Habit</title>
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <div class="container">
-      <nav>
-        <a href="/habbit">습관목록</a>
+    <nav>
+        <a href="/habit_list">Habit List</a>
         <a href="/logout">Logout</a>
       </nav>
-      <h1>습관 기록 추가</h1>
+    <div class="container">
+      
+      <h1>Add Note for your Habit</h1>
       <form action="/habit_record" method="post">
         <figure>
           <p class="habit-content">
@@ -17,7 +18,7 @@
             <input type="text" name="memo" />
           </p>
           <!-- <button type="submit" href="/list">저장</button> -->
-          <a class="button" type="submit" href="/list">저장</a>
+          <a class="button" type="submit" href="/list">Save</a>
         </figure>
       </form>
     </div>

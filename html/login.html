@@ -1,31 +1,34 @@
 <html>
   <head>
-    <title>로그인</title>
+    <title>Login</title>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
     <link rel="stylesheet" href="style.css" />
   </head>
 
   <body>
     <nav>
-      <a href="/login">Habit Tracker  🐇</a>
+      <a>Welcome to Habit Tracker !! 😉 </a>
     </nav>
     <div class="container">
-      <h1>Log in</h1>
+      <h1>Log In</h1>
 
       <form method="post" action="/login" class="signup-form">
         <div class="form-group">
-          <label for="username">아이디</label>
+          <label for="username">ID</label>
           <input type="text" id="username" name="username" required />
         </div>
+        <p></p>
         <div class="form-group">
-          <label for="password">비밀번호</label>
-          <input type="password" id="password" name="password" required />
+          <label for="password">Password</label>
+          <input type="text" id="password" name="password" required />
         </div>
-        <button type="submit" class="button centered-text">로그인</button>
+
+        <button type="submit" class="button centered-text">Login</button>
       </form>
-      <a href="/register">회원가입</a>
-    </div>
+ 
+    
+    <p class="centered-text">
+      <a href="/register">Need to create an account?</a>
+    </p>
   </body>
 </html>
