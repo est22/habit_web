@@ -66,8 +66,9 @@ A web application that allows users to manage and track their habits effectively
 </div>
 </details>
 
-
-:::mermaid
+&nbsp;
+![alt text](image-3.png)
+``` mermaid
 
 erDiagram
     USERS ||--o{ HABITS : has
@@ -96,7 +97,8 @@ erDiagram
         datetime createdAt
         integer habit_id FK
     }
-:::
+```
+
 
 
 
