@@ -1,115 +1,129 @@
 :root {
-    --purple-primary: #8A2BE2;
-    --purple-light: #9370DB;
-    --yellow-primary: #FFD700;
-    --yellow-light: #FFFFE0;
-    --lavender: #E6E6FA;
+  --purple-primary: #8a2be2;
+  --purple-light: #9370db;
+  --yellow-primary: #ffd700;
+  --yellow-light: #ffffe0;
+  --lavender: #e6e6fa;
 }
 
 body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    color: #333;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  color: #333;
 }
 
 .container {
-    width: 80%;
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
+  width: 80%;
+  margin: 0 auto;
+  padding: 20px;
 }
 
 nav {
-    background-color: var(--purple-primary);
-    padding: 10px 0;
-    text-align: center;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  background-color: var(--purple-primary);
+  padding: 10px 0;
+  text-align: right;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 nav a {
-    color: white;
-    text-decoration: none;
-    padding: 10px 20px;
-    margin: 0 5px;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
+  color: white;
+  text-decoration: none;
+  padding: 10px 20px;
+  margin: 0 5px;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
 }
 
 nav a:hover {
-    background-color: var(--yellow-primary);
-    color: var(--purple-primary);
+  background-color: var(--yellow-primary);
+  color: var(--purple-primary);
 }
 
 h1 {
-    color: var(--purple-primary);
-    text-align: center;
-    margin-bottom: 30px;
+  color: var(--purple-primary);
+  text-align: center;
 }
 
-.signup-form {
-    background-color: #f9f9f9;
-    border-radius: 10px;
-    padding: 30px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+/* 표 스타일 수정 */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--purple-light); /* 추가: 표 전체 테두리 */
 }
 
-.form-group {
-    margin-bottom: 20px;
+th,
+td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid var(--purple-light);
 }
 
-label {
-    display: block;
-    margin-bottom: 5px;
-    color: var(--purple-primary);
-    font-weight: bold;
+th {
+  background-color: var(
+    --purple-light
+  ); /* 수정: 첫 번째 행 배경색을 연보라색으로 변경 */
+  color: white;
 }
 
-input[type="text"],
-input[type="password"] {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 16px;
-    transition: border-color 0.3s ease, background-color 0.3s ease;
+/* 추가: 링크 스타일 */
+td a {
+  color: var(--purple-primary);
+  text-decoration: none;
 }
 
-input[type="text"]:focus,
-input[type="password"]:focus {
-    outline: none;
-    border-color: var(--purple-light);
-    background-color: var(--yellow-light);
+td a:hover {
+  text-decoration: underline;
+}
+
+/* 수정: 호버 효과를 연한 노란색으로 변경 */
+tr:hover {
+  background-color: var(--yellow-light);
 }
 
 .button {
-    display: block;
-    width: 100%;
-    padding: 12px 20px;
-    background-color: var(--purple-primary);
-    color: white;
-    text-decoration: none;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    margin-top: 20px;
-    text-align: center;
+  display: block;
+  padding: 10px 20px;
+  background-color: var(--purple-primary);
+  color: white;
+  text-decoration: none;
+  border: none;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+  margin-top: 20px;
+  text-align: center;
+  cursor: pointer;
 }
 
 .button:hover {
-    background-color: var(--yellow-primary);
-    color: var(--purple-primary);
+  background-color: var(--yellow-primary);
+  color: var(--purple-primary);
 }
 
 .centered-text {
-    text-align: center;
+  text-align: center;
 }
 
-/* 기존 스타일 유지 */
+/* 추가: figure 요소 스타일 */
+figure {
+  margin: 0;
+  padding: 0;
+}
+
+/* 추가: 삭제 링크 스타일 */
+td a[href="#"] {
+  color: #6534e9;
+  font-weight: bold;
+}
+
+td a[href="#"]:hover {
+  color: #c490e2;
+}
+
 .habit-content {
-    background-color: rgba(230, 230, 250, 0.5);
+    background-color: rgba(230, 230, 250, 0.5); /* 라벤더색 반투명 */
     border-radius: 10px;
     padding: 20px;
     margin-top: 20px;
