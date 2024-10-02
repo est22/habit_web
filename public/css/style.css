@@ -209,3 +209,8 @@ input[type="date"] :focus {
   border-color: #4417cd;
   outline: none;
 }
+
+.highlight {
+    background-color: rgba(255, 239, 21, 0.5);
+    padding: 2px; 
+}

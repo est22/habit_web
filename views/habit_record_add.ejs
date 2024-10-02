@@ -5,22 +5,20 @@
   </head>
   <body>
     <nav>
-        <a href="/habit_list">Habit List</a>
-        <a href="/logout">Logout</a>
-      </nav>
+      <a href="/habit_list">Habit List</a>
+      <a href="/logout">Logout</a>
+    </nav>
     <div class="container">
-      
       <h1>Add Note for your Habit</h1>
-      
+      <form method="post" action="/habit_record_add">
         <figure>
           <p class="habit-content">
             <label>memo</label>
             <input type="text" name="memo" />
           </p>
-          <!-- <button type="submit" href="/list">저장</button> -->
-          <a class="button" type="submit" href="/list">Save</a>
+          <button type="submit" href="/list">Save</button>
         </figure>
-      
+      </form>
     </div>
   </body>
 </html>

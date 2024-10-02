@@ -128,7 +128,7 @@ app.get("/logout", (req, res) => {
 
 // Habit list route
 app.get("/habit_list", (req, res) => {
-  const user = req.session.user;
+  const user = req.session.user
 
   if (user == undefined) {
     res.redirect("/login");
@@ -169,10 +169,11 @@ app.get("/habit/add", (req, res) => {
 });
 
 app.post("/habit/add", (req, res) => {
+  console.log("Received data:", req.body); // 추가
   const { habit_name, start_date, end_date } = req.body;
   const user = req.session.user;
 
-  if (user == undefined) {
+  if (user === undefined) {
     res.redirect("/habit_list");
     return;
   }
@@ -182,31 +183,48 @@ app.post("/habit/add", (req, res) => {
 
   db.run(insert_new_habit_sql, (err) => {
     if (err) {
+      console.error(err);
       res.status(500).send("Internal Server Error");
     }
     res.redirect("/habit_list");
   });
 });
 
+// Show habit list with habit information
 app.get("/habit_list/:id", (req, res) => {
   const id = req.params.id;
 
-  const record_list_sql = `
-  SELECT id, memo, createdAt
-  FROM records
-  WHERE habit_id = ${id}`;
-
-  db.all(record_list_sql, [], (err, rows) => {
+  // get habbit information
+  const habit_sql = `SELECT * FROM habits WHERE id = ?`;
+  
+  db.get(habit_sql, [id], (err, habit) => {
     if (err) {
-      res.status(500).send("Internal Server Error");
+      return res.status(500).send("Internal Server Error");
     }
-    if (rows) {
-      res.render("habit_record_list", { records: rows });
-    }
+
+    // Query to retrieve the records for the specified habit
+    const record_list_sql = `
+    SELECT id, memo, createdAt
+    FROM records
+    WHERE habit_id = ?`;
+
+    db.all(record_list_sql, [id], (err, rows) => {
+      if (err) {
+        return res.status(500).send("Internal Server Error");
+      }
+
+      // 습관 정보와 기록을 함께 전달
+      res.render("habit_record_list", { habit, records: rows });
+    });
   });
-
-
 });
+
+// Add note for habit record
+app.get("/habit_list/:id/add_note", (req, res) => {
+  const id = req.params.id;
+  res.render("habit_record_add");
+});
+
 
 app.listen(PORT, (req, res) => {
   console.log(`running server...`);
