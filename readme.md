@@ -57,14 +57,8 @@ A web application that allows users to manage and track their habits effectively
 
 # Entity-Relationship Diagram
 
-<details>
-<summary>korean</summary>
-<div markdown="1">
 
-![entity](image.png)
-
-</div>
-</details>
+![draw.io](image-3.png)
 
 ``` mermaid
 
