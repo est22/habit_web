@@ -72,7 +72,7 @@ app.get("/register", (req, res) => {
 app.post("/register", (req, res) => {
   const { name, email, password } = req.body;
 
-  const check_dup_email_sql = `select count(1) as count from users where email = '${email}'`;
+  const check_dup_email_sql = `SELECT count(1) as count FROM users WHERE email = '${email}'`;
 
   db.get(check_dup_email_sql, (err, row) => {
     if (err) {
@@ -81,7 +81,7 @@ app.post("/register", (req, res) => {
     if (row.count > 0) {
       res.status(200).send("Email already used ..");
     } else {
-      const insert_user_sql = `insert into users(name, email, password)  values('${name}', '${email}', '${password}');`;
+      const insert_user_sql = `INSERT into users(name, email, password)  values('${name}', '${email}', '${password}');`;
       db.run(insert_user_sql);
       res.redirect("/login");
     }
@@ -130,6 +130,12 @@ app.get("/logout", (req, res) => {
 // Habit list route
 app.get("/habit_list", (req, res) => {
   const user = req.session.user;
+
+  if (user == undefined) {
+    res.redirect("/login");
+    return;
+  }
+
   const list_sql = `
   SELECT id, habit_name, start_date, end_date, 0 count
   FROM habits
@@ -142,6 +148,33 @@ app.get("/habit_list", (req, res) => {
     if (rows) {
       res.render("habit_list", { habits: rows });
     }
+  });
+});
+
+// Add Habit
+app.get("/habit/add", (req, res) => {
+  res.render("habit_add");
+});
+
+app.post("/habit/add", (req, res) => {
+  const { habit_name, start_date, end_date } = req.body;
+  const user = req.session.user;
+
+  if (user == undefined) {
+    res.redirect("/habit_list");
+    return;
+  }
+
+  // const createdAt = moment().format("YYYY-MM-DD");
+  const insert_new_habit_sql = `
+  INSERT into habits(habit_name, start_date, end_date, user_id)  values('${habit_name}', '${start_date}', '${end_date}', ${user.id})`;
+
+  db.run(insert_new_habit_sql, (err) => {
+    if (err) {
+      res.status(500).send("Internal Server Error");
+    } 
+      res.redirect("/habit_list");
+    
   });
 });
 

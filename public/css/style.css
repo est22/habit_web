@@ -193,7 +193,8 @@ td a[href="#"]:hover {
 }
 
 input[type="text"],
-input[type="password"]  {
+input[type="password"],
+input[type="date"]  {
   width: 100%;
   padding: 10px;
   border: 1px solid #ccc;
@@ -203,7 +204,8 @@ input[type="password"]  {
 }
 
 input[type="text"],
-input[type="password"] :focus {
+input[type="password"],
+input[type="date"] :focus {
   border-color: #4417cd;
   outline: none;
 }
