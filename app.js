@@ -64,8 +64,7 @@ db.serialize(() => {
 });
 
 app.use(express.urlencoded({ extended: true }));
-// register 관련된 get router, post router
-// get router -> register.ejs
+
 app.get("/register", (req, res) => {
   res.render("register");
 });
@@ -121,17 +120,29 @@ app.post("/login", (req, res) => {
   });
 });
 
-// Habit list route
-app.get("/habit_list", (req, res) => {
-  res.render("habit_list");
-});
-
-
 app.get("/logout", (req, res) => {
   if (req.session.user) {
     req.session.user = null;
   }
   res.redirect("/login");
+});
+
+// Habit list route
+app.get("/habit_list", (req, res) => {
+  const user = req.session.user;
+  const list_sql = `
+  SELECT id, habit_name, start_date, end_date, 0 count
+  FROM habits
+  WHERE user_id = ${user.id}`;
+
+  db.all(list_sql, [], (err, rows) => {
+    if (err) {
+      res.status(500).send("Internal Server Error");
+    }
+    if (rows) {
+      res.render("habit_list", { habits: rows });
+    }
+  });
 });
 
 app.listen(PORT, (req, res) => {
