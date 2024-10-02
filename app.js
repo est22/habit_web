@@ -3,162 +3,135 @@ const fs = require("fs");
 const moment = require("moment");
 const sqlite3 = require("sqlite3");
 const path = require("path");
+// login, register
+const cookieParser = require("cookie-parser");
+const expressSession = require("express-session");
 
 // DB setting
 const db_name = path.join(__dirname, "habit.db");
 const db = new sqlite3.Database(db_name);
 
-
 const app = express();
 const PORT = 3000;
 
-
 app.set("views", "./views");
 app.set("view engine", "ejs");
+// CSS
+app.use(express.static("public"));
 
+app.use(
+  expressSession({
+    secret: "sample",
+    resave: true,
+    saveUninitialized: true,
+  })
+);
+// Create DB
+const create_users_sql = `
+create table if not exists users (
+    id integer primary key AUTOINCREMENT,
+    name varchar(100),
+    email varchar(255) UNIQUE,
+    password varchar(255),
+    createdAt datetime default CURRENT_TIMESTAMP
+)`;
+const create_habits_sql = `
+  create table if not exists habits (
+    id integer primary key AUTOINCREMENT,
+    habit_name varchar(255),
+    start_date datetime,
+    end_date datetime,
+    createdAt datetime default CURRENT_TIMESTAMP,
+    user_id integer not null,
+    FOREIGN KEY(user_id) REFERENCES user(id)
+  )
+`;
+const create_records_sql = `
+  create table if not exists records (
+    id integer PRIMARY key AUTOINCREMENT,
+    memo varchar(255),
+    createdAt datetime default CURRENT_TIMESTAMP,
+    habit_id integer not null,
+    FOREIGN KEY(habit_id) REFERENCES habits(id)
+  )
+`;
 
+// Run DB
+db.serialize(() => {
+  db.run(create_users_sql);
+  db.run(create_habits_sql);
+  db.run(create_records_sql);
+});
 
-// const create_users_sql = `
-// create table if not exists users (
-//     id integer primary key AUTOINCREMENT,
-//     name varchar(100),
-//     email varchar(255) UNIQUE,
-//     password varchar(255),
-//     createdAt datetime default CURRENT_TIMESTAMP
-// )`;
+app.use(express.urlencoded({ extended: true }));
+// register 관련된 get router, post router
+// get router -> register.ejs
+app.get("/register", (req, res) => {
+  res.render("register");
+});
 
+app.post("/register", (req, res) => {
+  const { name, email, password } = req.body;
 
-// const create_habits_sql = `
-//   create table if not exists habits (
-//     id integer primary key AUTOINCREMENT,
-//     habit_name varchar(255),
-//     start_date datetime,
-//     end_date datetime
-//     createdAt datetime default CURRENT_TIMESTAMP,
-//     user_id integer not null,
-//     FOREIGN KEY(user_id) REFERENCES user(id)
-//   )
-// `;
+  const check_dup_email_sql = `select count(1) as count from users where email = '${email}'`;
 
-// const create_records_sql = `
-//   create table if not exists records (
-//     id integer PRIMARY key AUTOINCREMENT,
-//     memo varchar(255),
-//     createdAt datetime default CURRENT_TIMESTAMP,
-//     habit_id integer not null,
-//     FOREIGN KEY(habit_id) REFERENCES habits(id)
-//   )
-// `;
-
-
-
-// db.serialize(() => {
-//   db.run(create_users_sql);
-//   db.run(create_habits_sql);
-//   db.run(create_records_sql);
-// });
-
-// view
-app.get("/view/:id", (req, res) => {
-  const id = req.params.id;
-  let sql = `select id, title, content, author, createdAt, count from posts where id = ${id}`;
-
-  let countSql = `update posts set count = count + 1 where id = ${id}`;
-  db.run(countSql);
-
-  db.all(sql, [], (err, rows) => {
+  db.get(check_dup_email_sql, (err, row) => {
     if (err) {
       res.status(500).send("Internal Server Error");
+    }
+    if (row.count > 0) {
+      res.status(200).send("Email already used ..");
     } else {
-      const post = rows[0];
-      res.render("view", { post: post });
+      const insert_user_sql = `insert into users(name, email, password)  values('${name}', '${email}', '${password}');`;
+      db.run(insert_user_sql);
+      res.redirect("/login");
     }
   });
 });
 
-// create
-app.get("/create", (req, res) => {
-  res.render("create");
+app.get("/login", (req, res) => {
+  res.render("login");
 });
 
-app.use(express.urlencoded({ extended: true })); //  data from <form> -> post
+app.post("/login", (req, res) => {
+  // body like 'email=test@gmail.com&password=12345'
+  const { email, password } = req.body;
+  // checking DB if there's email as 'test@gmail.com' & password as '12345'
+  const check_sql = `SELECT * FROM users WHERE email='${email}' AND password='${password}'`;
 
-app.post("/create", (req, res) => {
-  const createdAt = moment().format("YYYY-MM-DD");
-  let sql = `insert into posts(title, content, author, createdAt)
-  values('${req.body.title}','${req.body.content}','${req.body.author}', '${createdAt}')`;
-
-  db.run(sql, (err) => {
+  db.get(check_sql, (err, row) => {
     if (err) {
-      res.status(500).send("Internal Server Error");
+      // console.error(err);
+      return res.redirect("/login?error=internal_error");
+    }
+    console.log(row); // debug
+    // row = user's object
+    // if there's no row -> no user -> redirect to login page
+    if (row) {
+      req.session.user = {
+        id: row.id,
+        email: row.email,
+        name: row.name,
+      };
+
+      res.redirect("/habit_list");
     } else {
-      res.redirect("/list");
+      res.redirect("/login");
     }
   });
 });
 
-// edit
-app.get("/edit/:id", (req, res) => {
-  const id = req.params.id;
-  let sql = `select id, title, content, author, createdAt, count from posts where id = ${id}`;
-
-  let countSql = `update posts set count = count + 1 where id = ${id}`;
-  db.run(countSql);
-
-  db.all(sql, [], (err, rows) => {
-    if (err) {
-      res.status(500).send("Internal Server Error");
-    } else {
-      const post = rows[0];
-      res.render("edit", { post: post });
-    }
-  });
+// Habit list route
+app.get("/habit_list", (req, res) => {
+  res.render("habit_list");
 });
 
-app.post("/edit/:id", (req, res) => {
-  const id = req.params.id;
-  let sql = `update posts set
-    title = '${req.body.title}',
-    content = '${req.body.content}',
-    author = '${req.body.author}'
-    where id = ${id}`;
 
-  db.run(sql, (err) => {
-    if (err) {
-      // console.log(err);
-      res.status(500).send("Internal Server Error");
-    } else {
-      res.redirect(`/view/${id}`);
-    }
-  });
-});
-
-//   const result = fs.readFileSync("test.json", "utf-8");
-//   let data = JSON.parse(result);
-
-//   for (item of data["result"]) {
-//     if (item["id"] == id) {
-//       item["title"] = req.body.title;
-//       item["content"] = req.body.content;
-//       item["author"] = req.body.author;
-//       item["count"] = item["count"] ? item["count"] : 0;
-//     }
-//   }
-//   fs.writeFileSync("test.json", JSON.stringify(data), "utf-8");
-//   res.redirect(`/view/${id}`);
-// });
-
-app.get("/remove/:id", (req, res) => {
-  const id = req.params.id;
-
-  let sql = `delete from posts where id = ${id}`;
-  db.run(sql, (err) => {
-    if (err) {
-      res.status(500).send("Internal Server Error");
-    } else {
-      res.redirect("/list");
-    }
-  });
+app.get("/logout", (req, res) => {
+  if (req.session.user) {
+    req.session.user = null;
+  }
+  res.redirect("/login");
 });
 
 app.listen(PORT, (req, res) => {
