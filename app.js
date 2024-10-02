@@ -13,7 +13,6 @@ const app = express();
 const PORT = 3000;
 
 
-
 app.set("views", "./views");
 app.set("view engine", "ejs");
 
@@ -163,5 +162,5 @@ app.get("/remove/:id", (req, res) => {
 });
 
 app.listen(PORT, (req, res) => {
-  console.log(`게시판 서버를 시작합니다.`);
+  console.log(`running server...`);
 });

@@ -1,0 +1,42 @@
+<html>
+  <head>
+    <title>Add Habit</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <nav>
+      <a href="/habit_list">Habit List</a>
+      <a href="/login">Logout</a>
+    </nav>
+    <div class="container">
+      <h1>Add Habit</h1>
+
+      <form method="post" action="/habit" class="signup-form">
+        <figure>
+          <p>
+            <label>Habit Name</label>
+            <input type="text" name="habit_name" required />
+          </p>
+
+          <p>
+            <label>Start Date (YYYY-MM-DD)</label>
+            <input type="text" name="start_date" required />
+          </p>
+
+          <p>
+            <label>End Date (YYYY-MM-DD)</label>
+            <input type="text" name="end_date" required />
+          </p>
+        </figure>
+
+        <button type="submit" class="button centered-text" style="width: 100%">
+          Confirm
+        </button>
+      </form>
+    </div>
+  </body>
+</html>

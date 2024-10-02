@@ -1,0 +1,26 @@
+<html>
+  <head>
+    <title>Add Note for your Habit</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <nav>
+        <a href="/habit_list">Habit List</a>
+        <a href="/logout">Logout</a>
+      </nav>
+    <div class="container">
+      
+      <h1>Add Note for your Habit</h1>
+      <form action="/habit_record" method="post">
+        <figure>
+          <p class="habit-content">
+            <label>memo</label>
+            <input type="text" name="memo" />
+          </p>
+          <!-- <button type="submit" href="/list">저장</button> -->
+          <a class="button" type="submit" href="/list">Save</a>
+        </figure>
+      </form>
+    </div>
+  </body>
+</html>
