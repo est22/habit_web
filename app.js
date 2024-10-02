@@ -103,7 +103,6 @@ app.post("/login", (req, res) => {
       // console.error(err);
       return res.redirect("/login?error=internal_error");
     }
-    console.log(row); // debug
     // row = user's object
     // if there's no row -> no user -> redirect to login page
     if (row) {
@@ -161,7 +160,6 @@ app.get("/remove/:id", (req, res) => {
     } else {
       res.redirect("/habit_list");
     }
-
   });
 });
 
@@ -188,6 +186,26 @@ app.post("/habit/add", (req, res) => {
     }
     res.redirect("/habit_list");
   });
+});
+
+app.get("/habit_list/:id", (req, res) => {
+  const id = req.params.id;
+
+  const record_list_sql = `
+  SELECT id, memo, createdAt
+  FROM records
+  WHERE habit_id = ${id}`;
+
+  db.all(record_list_sql, [], (err, rows) => {
+    if (err) {
+      res.status(500).send("Internal Server Error");
+    }
+    if (rows) {
+      res.render("habit_record_list", { records: rows });
+    }
+  });
+
+
 });
 
 app.listen(PORT, (req, res) => {
