@@ -220,8 +220,8 @@ app.get("/habit_list/:id", (req, res) => {
 });
 
 // Add note for habit record
-app.get("/habit_list/:id/add_note", (req, res) => {
-  const id = req.params.id;
+app.get("/habit_record_add", (req, res) => {
+  // const id = req.params.id;
   res.render("habit_record_add");
 });
 
