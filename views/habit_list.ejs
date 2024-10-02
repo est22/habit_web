@@ -31,7 +31,7 @@
               <td><a href="#"><%= item.habit_name %></a></td>
               <td>2<%= item.start_date %> ~ <%= item.end_date %></td>
               <td><%= item.count %></td>
-              <td><a href="#">Delete</a></td>
+              <td><a href="/remove/<%= item.id %>">Delete</a></td>
             </tr>
             <% }); %>
           </tbody>

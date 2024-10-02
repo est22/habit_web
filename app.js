@@ -151,6 +151,20 @@ app.get("/habit_list", (req, res) => {
   });
 });
 
+app.get("/remove/:id", (req, res) => {
+  const id = req.params.id;
+
+  let sql = `DELETE FROM habits WHERE id = ${id}`;
+  db.run(sql, (err) => {
+    if (err) {
+      res.status(500).send("Internal Server Error");
+    } else {
+      res.redirect("/habit_list");
+    }
+
+  });
+});
+
 // Add Habit
 app.get("/habit/add", (req, res) => {
   res.render("habit_add");
@@ -165,16 +179,14 @@ app.post("/habit/add", (req, res) => {
     return;
   }
 
-  // const createdAt = moment().format("YYYY-MM-DD");
   const insert_new_habit_sql = `
   INSERT into habits(habit_name, start_date, end_date, user_id)  values('${habit_name}', '${start_date}', '${end_date}', ${user.id})`;
 
   db.run(insert_new_habit_sql, (err) => {
     if (err) {
       res.status(500).send("Internal Server Error");
-    } 
-      res.redirect("/habit_list");
-    
+    }
+    res.redirect("/habit_list");
   });
 });
 
