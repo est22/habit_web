@@ -29,7 +29,10 @@
               <td><%= item.id %></td>
               <td><%= item.memo %></td>
               <td><%= item.createdAt %></td>
-              <td><a href="/remove/<%= item.id %>">Delete</a></td>
+              <td>
+                <!-- <a href="/habit/<%=id%>/delete_note/<%= item.id %>/">Delete</a> -->
+                <a href="/habit/<%=id%>/delete_note/<%= item.id %>/">Delete</a>
+              </td>
             </tr>
             <% }); %>
           </tbody>

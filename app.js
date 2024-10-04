@@ -160,7 +160,23 @@ app.get("/habit/delete/:id", (req, res) => {
     if (err) {
       res.status(500).send("Internal Server Error");
     } else {
-      res.redirect("/habit_list");
+      res.redirect("/habit");
+    }
+  });
+});
+
+// Delete Habit Note (Record)
+app.get("/habit/:habit_id/delete_note/:id", (req, res) => {
+  const id = req.params.id; // record id 
+  const habit_id = req.params.habit_id; // habit_id
+
+  let sql = `DELETE FROM records WHERE id = ${id}`;
+  db.run(sql, (err) => {
+    if (err) {
+      console.error(err); // debug
+      res.status(500).send("Internal Server Error");
+    } else {
+      res.redirect("/habit/" + habit_id);
     }
   });
 });
