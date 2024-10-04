@@ -136,8 +136,9 @@ app.get("/habit_list", (req, res) => {
   }
 
   const list_sql = `
-  SELECT id, habit_name, start_date, end_date, 0 count
-  FROM habits
+  SELECT id, habit_name, start_date, end_date,
+  (SELECT count (1) FROM records r WHERE r.habit_id = h.id) count
+  FROM habits h
   WHERE user_id = ${user.id}`;
 
   db.all(list_sql, [], (err, rows) => {
