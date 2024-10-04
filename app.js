@@ -112,7 +112,7 @@ app.post("/login", (req, res) => {
         name: row.name,
       };
 
-      res.redirect("/habit_list");
+      res.redirect("/habit");
     } else {
       res.redirect("/login");
     }
@@ -127,7 +127,7 @@ app.get("/logout", (req, res) => {
 });
 
 // Habit list route
-app.get("/habit_list", (req, res) => {
+app.get("/habit", (req, res) => {
   const user = req.session.user;
 
   if (user == undefined) {
@@ -151,7 +151,8 @@ app.get("/habit_list", (req, res) => {
   });
 });
 
-app.get("/remove/:id", (req, res) => {
+// Delete Habit
+app.get("/habit/delete/:id", (req, res) => {
   const id = req.params.id;
 
   let sql = `DELETE FROM habits WHERE id = ${id}`;
@@ -175,7 +176,7 @@ app.post("/habit/add", (req, res) => {
   const user = req.session.user;
 
   if (user === undefined) {
-    res.redirect("/habit_list");
+    res.redirect("/habit");
     return;
   }
 
@@ -187,12 +188,12 @@ app.post("/habit/add", (req, res) => {
       console.error(err);
       res.status(500).send("Internal Server Error");
     }
-    res.redirect("/habit_list");
+    res.redirect("/habit");
   });
 });
 
 // Show habit list with habit information
-app.get("/habit_list/:id", (req, res) => {
+app.get("/habit/:id", (req, res) => {
   const id = req.params.id;
 
   // get habbit information
@@ -214,19 +215,19 @@ app.get("/habit_list/:id", (req, res) => {
         return res.status(500).send("Internal Server Error");
       }
 
-      // 습관 정보와 기록을 함께 전달
+      console.log(habit, id); // debug - habit info
       res.render("habit_record_list", { habit, records: rows, id });
     });
   });
 });
 
 // Add note for habit record
-app.get("/habit_list/:id/add", (req, res) => {
+app.get("/habit/:id/add_note", (req, res) => {
   const id = req.params.id;
   res.render("habit_record_add", { id });
 });
 
-app.post("/habit_list/:id/add", (req, res) => {
+app.post("/habit/:id/add_note", (req, res) => {
   const memo = req.body.memo;
   const habit_id = req.params.id;
   const note_sql = `INSERT INTO records(memo, habit_id) VALUES (?, ?)`;
@@ -238,7 +239,7 @@ app.post("/habit_list/:id/add", (req, res) => {
       console.error(err); // debug
       res.status(500).send("Internal Server Error");
     } else {
-      res.redirect("/habit_list/" + habit_id);
+      res.redirect("/habit/" + habit_id);
     }
   });
 });
