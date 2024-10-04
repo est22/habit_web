@@ -10,7 +10,9 @@
       <a href="/logout">Logout</a>
     </nav>
     <div class="container">
-      <h1>Habit Record: <span class="highlight"><%= habit.habit_name %></span></h1>
+      <h1>
+        Habit Record: <span class="highlight"><%= habit.habit_name %></span>
+      </h1>
       <figure>
         <table>
           <thead>
@@ -34,7 +36,7 @@
         </table>
         <p></p>
 
-        <a class="button" href="/habit_record_add">Add Note</a>
+        <a class="button" href="/habit_list/<%=id%>/add">Add Note</a>
       </figure>
     </div>
   </body>

@@ -128,7 +128,7 @@ app.get("/logout", (req, res) => {
 
 // Habit list route
 app.get("/habit_list", (req, res) => {
-  const user = req.session.user
+  const user = req.session.user;
 
   if (user == undefined) {
     res.redirect("/login");
@@ -169,7 +169,7 @@ app.get("/habit/add", (req, res) => {
 });
 
 app.post("/habit/add", (req, res) => {
-  console.log("Received data:", req.body); // 추가
+  console.log("Received data:", req.body); // debug
   const { habit_name, start_date, end_date } = req.body;
   const user = req.session.user;
 
@@ -196,7 +196,7 @@ app.get("/habit_list/:id", (req, res) => {
 
   // get habbit information
   const habit_sql = `SELECT * FROM habits WHERE id = ?`;
-  
+
   db.get(habit_sql, [id], (err, habit) => {
     if (err) {
       return res.status(500).send("Internal Server Error");
@@ -214,17 +214,33 @@ app.get("/habit_list/:id", (req, res) => {
       }
 
       // 습관 정보와 기록을 함께 전달
-      res.render("habit_record_list", { habit, records: rows });
+      res.render("habit_record_list", { habit, records: rows, id });
     });
   });
 });
 
 // Add note for habit record
-app.get("/habit_record_add", (req, res) => {
-  // const id = req.params.id;
-  res.render("habit_record_add");
+app.get("/habit_list/:id/add", (req, res) => {
+  const id = req.params.id;
+  res.render("habit_record_add", { id });
 });
 
+app.post("/habit_list/:id/add", (req, res) => {
+  const memo = req.body.memo;
+  const habit_id = req.params.id;
+  const note_sql = `INSERT INTO records(memo, habit_id) VALUES (?, ?)`;
+
+  db.run(note_sql, [memo, habit_id], (err) => {
+    console.log("Received data:", req.body); // debug
+
+    if (err) {
+      console.error(err); // debug
+      res.status(500).send("Internal Server Error");
+    } else {
+      res.redirect("/habit_list/" + habit_id);
+    }
+  });
+});
 
 app.listen(PORT, (req, res) => {
   console.log(`running server...`);
