@@ -57,6 +57,27 @@ app.post("/users/:user_id/habit/add", (req, res) => {
   });
 });
 
+// delete Habit
+app.delete("/users/:user_id/habit/:id", (req, res) => {
+  const habit_id = req.params.id;
+  const user_id = req.params.user_id; // added
+
+  let delete_record_sql = `DELETE FROM records WHERE id = ?`;
+  db.run(delete_record_sql, [habit_id], (err) => {
+    if (err) {
+      res.status(500).send(`Internal Server Error [records]: ${err}`);
+    }
+    const delete_habit_sql = `DELETE FROM habits WHERE id = ?`;
+
+    db.run(delete_habit_sql, [habit_id], (err) => {
+      if (err) {
+        res.status(500).send(`Internal Server Error [habits]: ${err}`);
+      }
+      res.redirect(`/users/${user_id}/habit`); // added
+    });
+  });
+});
+
 app.listen(PORT, (req, res) => {
   console.log(`running server...`);
 });
