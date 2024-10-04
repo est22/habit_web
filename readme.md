@@ -54,46 +54,27 @@ A web application that allows users to manage and track their habits effectively
 &nbsp;
 
 
-
-# Entity-Relationship Diagram
-
-
-![draw.io](image-3.png)
-
-``` mermaid
-
-erDiagram
-    USERS ||--o{ HABITS : has
-    HABITS ||--o{ RECORDS : contains
-
-    USERS {
-        integer id PK
-        varchar name
-        varchar email UK
-        varchar password
-        datetime createdAt
-    }
-
-    HABITS {
-        integer id PK
-        varchar habit_name
-        datetime start_date
-        datetime end_date
-        datetime createdAt
-        integer user_id FK
-    }
-
-    RECORDS {
-        integer id PK
-        varchar memo
-        datetime createdAt
-        integer habit_id FK
-    }
-```
+# UI Design & Prototype
+<details>
+<summary>korean</summary>
+<div markdown="1">
 
 
+![alt text](image-1.png)
+* [프로토타입 보기 (KR)](https://whimsical.com/habit-web-THkqG3nynXrMxTGv31HkAd)
+
+* [요구사항 명세서 pdf](habbit-requirement.pdf)
+
+
+</div>
+</details>
+&nbsp;
+
+![alt text](image-2.png)
+* [view prototype (EN)](https://whimsical.com/habit-web-eng-Fq6SJpY2R9dFP3CX86zYcD@or4CdLRbgroUYs7q3E5gZn2vyaZihJaovEpzuq9dR)
 
 &nbsp;
+
 # Sequence Diagram
 ``` mermaid
 sequenceDiagram
@@ -165,26 +146,43 @@ sequenceDiagram
 
 &nbsp;
 
-# UI Design & Prototype
-<details>
-<summary>korean</summary>
-<div markdown="1">
+
+# Entity-Relationship Diagram
 
 
-![alt text](image-1.png)
-* [프로토타입 보기 (KR)](https://whimsical.com/habit-web-THkqG3nynXrMxTGv31HkAd)
+![draw.io](image-3.png)
 
-* [요구사항 명세서 pdf](habbit-requirement.pdf)
+``` mermaid
 
+erDiagram
+    USERS ||--o{ HABITS : has
+    HABITS ||--o{ RECORDS : contains
 
-</div>
-</details>
-&nbsp;
+    USERS {
+        integer id PK
+        varchar name
+        varchar email UK
+        varchar password
+        datetime createdAt
+    }
 
-![alt text](image-2.png)
-* [view prototype (EN)](https://whimsical.com/habit-web-eng-Fq6SJpY2R9dFP3CX86zYcD@or4CdLRbgroUYs7q3E5gZn2vyaZihJaovEpzuq9dR)
+    HABITS {
+        integer id PK
+        varchar habit_name
+        datetime start_date
+        datetime end_date
+        datetime createdAt
+        integer user_id FK
+    }
 
-&nbsp;
+    RECORDS {
+        integer id PK
+        varchar memo
+        datetime createdAt
+        integer habit_id FK
+    }
+```
+
 
 ## Installation
 1. Clone the repository
