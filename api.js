@@ -40,6 +40,23 @@ app.get("/users/:user_id/habit", (req, res) => {
   });
 });
 
+// add habit
+app.post("/users/:user_id/habit/add", (req, res) => {
+  const { habit_name, start_date, end_date } = req.body;
+
+  const user_id = req.params.user_id;
+  const insert_new_habit_sql = `
+  INSERT into habits(habit_name, start_date, end_date, user_id)  values('${habit_name}', '${start_date}', '${end_date}', ${user_id})`;
+
+  db.run(insert_new_habit_sql, (err) => {
+    if (err) {
+      console.error(err);
+      res.status(500).send("Internal Server Error");
+    }
+    res.redirect(`/users/${user_id}/habit`);
+  });
+});
+
 app.listen(PORT, (req, res) => {
   console.log(`running server...`);
 });
