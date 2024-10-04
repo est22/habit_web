@@ -20,6 +20,26 @@ app.get("/users", (req, res) => {
   });
 });
 
+// Habit list route
+app.get("/users/:user_id/habit", (req, res) => {
+  const user_id = req.params.user_id;
+
+  const list_sql = `
+  SELECT id, habit_name, start_date, end_date,
+  (SELECT count (1) FROM records r WHERE r.habit_id = h.id) count
+  FROM habits h
+  WHERE user_id = ${user_id}`;
+
+  db.all(list_sql, [], (err, rows) => {
+    if (err) {
+      res.status(500).send("Internal Server Error");
+    }
+    if (rows) {
+      res.json({ habits: rows });
+    }
+  });
+});
+
 app.listen(PORT, (req, res) => {
   console.log(`running server...`);
 });
