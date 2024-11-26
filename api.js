@@ -78,6 +78,67 @@ app.delete("/users/:user_id/habit/:id", (req, res) => {
   });
 });
 
+// add habit
+app.get("/habit/:id", (req, res) => {
+  const habit_id = req.params.id;
+  const user_id = req.params.user_id; // added
+
+  // get habbit information
+  const habit_sql = `SELECT * FROM habits WHERE id = ?`;
+
+  db.get(habit_sql, [habit_id, user_id], (err, habit) => {
+    if (err) {
+      return res.status(500).send("Internal Server Error");
+    }
+
+    // Query to retrieve the records for the specified habit
+    const record_list_sql = `
+    SELECT id, memo, createdAt
+    FROM records
+    WHERE habit_id = ?`;
+
+    db.all(record_list_sql, [id], (err, rows) => {
+      if (err) {
+        return res.status(500).send("Internal Server Error");
+      }
+
+      console.log(habit, id); // debug - habit info
+      res.render("habit_record_list", { habit, records: rows, id });
+    });
+  });
+});
+
+// add habit record
+app.post("/users/:user_id/habit/:id/record/add", (req, res) => {
+  const habit_id = req.params.id;
+  const user_id = req.params.user_id; // added
+  const { memo } = req.body;
+
+  const insert_record__sql = `INSERT INTO records(memo, habit_id) VALUES (?, ?)`;
+
+  db.run(insert_record__sql, [memo, habit_id], (err) => {
+    if (err) {
+      res.status(500).send("Internal Server Error");
+    }
+    res.redirect("/users/${user_id}/habit/${habit_id}/record");
+  });
+});
+
+// delete habit record
+app.delete("/users/:user_id/habit/:hid/record/:rid", (req, res) => {
+  const habit_id = req.params.hid;
+  const record_id = req.params.rid;
+  const user_id = req.params.user_id; // added
+
+  const delete_record_sql = `DELETE FROM records WHERE id = ?`;
+  db.run(delete_habit_sql, [record_id], (err) => {
+    if (err) {
+      res.status(500).send(`Internal Server Error [habits]: ${err}`);
+    }
+    res.redirect(`/users/${user_id}/habit/${habit_id / record}`); // added
+  });
+});
+
 app.listen(PORT, (req, res) => {
   console.log(`running server...`);
 });

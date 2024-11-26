@@ -191,7 +191,9 @@ app.post("/habit/add", (req, res) => {
   const { habit_name, start_date, end_date } = req.body;
   const user = req.session.user;
 
-  if (user === undefined) {
+  if (user === undefined
+    
+  ) {
     res.redirect("/habit");
     return;
   }
